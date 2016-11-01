@@ -25,12 +25,15 @@ import java.util.Stack;
         int min = lowlink[u];
         stack.push(v);
 
-        for (int w : G.adjMat(u)) {
-            if (!visited[w]) {
-                dfs(G, w);
-            }
-            if (lowlink[w] < min) {
-                min = low[w];
+        boolean[] adjVec = G.adjMat(u);
+        for (int w = 0; w < G.V(); w++) {
+            if (adjVec[w]) {
+                if (!visited[w]) {
+                    dfs(G, w);
+                }
+                if (lowlink[w] < min) {
+                    min = low[w];
+                }
             }
         }
 

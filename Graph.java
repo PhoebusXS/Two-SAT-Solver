@@ -15,7 +15,7 @@ public class Graph {
         return this.V;
     }
 
-    public boolean[][] adjMat(int u) {
+    public boolean[] adjMat(int u) {
         return this.adjMat[u];
     }
 
