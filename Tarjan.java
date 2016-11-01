@@ -1,5 +1,7 @@
 import java.util.Stack;
 
+public class Tarjan {
+
     private boolean[] visited;
     private int time; 
     private int tmp;
@@ -23,7 +25,7 @@ import java.util.Stack;
         time++;
         visited[u] = true;
         int min = lowlink[u];
-        stack.push(v);
+        stack.push(u);
 
         boolean[] adjVec = G.adjMat(u);
         for (int w = 0; w < G.V(); w++) {
@@ -32,7 +34,7 @@ import java.util.Stack;
                     dfs(G, w);
                 }
                 if (lowlink[w] < min) {
-                    min = low[w];
+                    min = lowlink[w];
                 }
             }
         }
@@ -47,8 +49,8 @@ import java.util.Stack;
         do {
             w = stack.pop();
             index[w] = time;
-            low[w] = G.V();
-        } while (w != v);
+            lowlink[w] = G.V();
+        } while (w != u);
 
         time++;
     }

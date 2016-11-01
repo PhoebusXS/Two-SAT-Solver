@@ -5,6 +5,7 @@ public class Graph {
 
     public Graph (int V) {
         this.adjMat = new boolean[V][V];
+        this.V = V;
     }
 
     public void addEdge (int u, int v) {
