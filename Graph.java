@@ -16,8 +16,19 @@ public class Graph {
         return this.V;
     }
 
-    public boolean[] adjMat(int u) {
-        return this.adjMat[u];
+    public int[] adjMat(int u) {
+        int count = 0;
+        for (boolean v : this.adjMat[u]) {
+            if (v) count++;
+        }
+        int[] adjVec = new int[count];
+        int j = 0;
+        for (int i = 0; i < this.V; i++) {
+            if (this.adjMat[u][i]) {
+                adjVec[j++] = i;
+            }
+        }
+        return adjVec;
     }
 
 }
