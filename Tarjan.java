@@ -1,10 +1,11 @@
 import java.util.Stack;
+import java.util.Arrays;
 
 public class Tarjan {
 
     private boolean[] visited;
     private int time; 
-    private int tmp;
+    private int count;
     private int[] index;
     private int[] lowlink;
     private Stack<Integer> stack;
@@ -22,45 +23,37 @@ public class Tarjan {
     }
     
     public void dfs (Graph G, int u) {
-        time++;
         visited[u] = true;
+        lowlink[u] = time++;
         int min = lowlink[u];
         stack.push(u);
-
-        boolean[] adjVec = G.adjMat(u);
-        for (int w = 0; w < G.V(); w++) {
-            if (adjVec[w]) {
-                if (!visited[w]) {
-                    dfs(G, w);
-                }
-                if (lowlink[w] < min) {
-                    min = lowlink[w];
-                }
-            }
+        for (int w : G.adjMat(u)) {
+            if (!visited[w]) dfs(G, w);
+            if (lowlink[w] < min) min = lowlink[w];
         }
-
         if (min < lowlink[u]) {
             lowlink[u] = min;
             return;
         }
-
         int w;
-
         do {
             w = stack.pop();
-            index[w] = time;
+            index[w] = count;
             lowlink[w] = G.V();
         } while (w != u);
-
-        time++;
-    }
-
-    public int time() {
-        return time;
+        count++;
     }
 
     public boolean isSC (int u, int v) {
         return index[u] == index[v];
+    }
+
+    public int[] index() {
+        return this.index;
+    }
+
+    public int count() {
+        return this.count;
     }
 
 }
