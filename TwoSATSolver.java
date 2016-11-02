@@ -40,9 +40,6 @@ public class TwoSATSolver {
             G.addEdge(vMap(-a), vMap(b));
             G.addEdge(vMap(-b), vMap(a));
         }
-        for (int i = 0; i < G.V(); i++) {
-            System.out.println(Arrays.toString(G.adjMat()[i]));
-        }
     }
  
     private static int getV(String cnfString) {
@@ -67,7 +64,6 @@ public class TwoSATSolver {
 
     private static boolean checkGraph(Graph G) {
         scc = new Tarjan(G);
-        System.out.println(Arrays.toString(scc.index()));
         for (int i = G.V()/2; i < G.V(); i++){
             if (scc.isSC(i, vMap(-revMap(i)))) return false; // not solvable
         }
