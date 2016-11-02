@@ -31,4 +31,8 @@ public class Graph {
         return adjVec;
     }
 
+    public boolean[][] adjMat() {
+        return this.adjMat;
+    }
+
 }
