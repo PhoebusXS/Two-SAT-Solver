@@ -33,12 +33,23 @@ public class TwoSATSolver {
 
     private static void makeGraph(String cnfString) {
         G = new Graph(2 * getV(cnfString));
-        Matcher matchPairs = Pattern.compile("(\\-?\\d+)\\s+(\\-?\\d+)\\s+(0|$)").matcher(cnfString);
+        Matcher matchPairs = Pattern.compile("((p\\scnf\\s\\d+\\s\\d+\\s)|0)(\\-?\\d+)\\s(\\-?\\d+)\\s0?").matcher(cnfString);
+        Matcher singleNode = Pattern.compile("((p\\scnf\\s\\d+\\s\\d+\\s)|0)(\\-?\\d+)\\s0?").matcher(cnfString);
+        while (singleNode.find()) {
+            int x = Integer.parseInt(singleNode.group(3));
+            G.addEdge(vMap(x),vMap(x));
+        }
         while (matchPairs.find()) {
-            int a = Integer.parseInt(matchPairs.group(1));
-            int b = Integer.parseInt(matchPairs.group(2));
-            G.addEdge(vMap(-a), vMap(b));
-            G.addEdge(vMap(-b), vMap(a));
+            try {
+                int a = Integer.parseInt(matchPairs.group(3));
+                int b = Integer.parseInt(matchPairs.group(4));
+                G.addEdge(vMap(-a), vMap(b));
+                G.addEdge(vMap(-b), vMap(a));
+            } catch (NumberFormatException e) {
+                if (singleNode.find()) return;
+                System.out.println("INVALID INPUT");
+                System.exit(0); 
+            }
         }
     }
  
@@ -71,6 +82,7 @@ public class TwoSATSolver {
         truthAssignment = new int[G.V()];
         int u, v;
         int[] sccInd = scc.index();
+        System.out.println(Arrays.toString(scc.index()));
         for (int i = 0; i <= scc.count()-1; i++) {
             while (true) {
                 u = findValue(sccInd, i);
@@ -97,6 +109,7 @@ public class TwoSATSolver {
     }
  
     private static void printSoln() {
+        System.out.println("FORMULA SATISFIABLE");
         for (int i = G.V()/2; i < G.V(); i++) {
             System.out.print(Integer.toString(truthAssignment[i]) + ' ');
         }
@@ -104,7 +117,7 @@ public class TwoSATSolver {
     }
 
     private static void noSoln() {
-        System.out.println("oops no solution.");
+        System.out.println("FORMULA UNSATISFIABLE");
     }
 
 }
