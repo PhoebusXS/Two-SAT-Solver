@@ -34,10 +34,10 @@ public class TwoSATSolver {
     private static void makeGraph(String cnfString) {
         G = new Graph(2 * getV(cnfString));
         Matcher matchPairs = Pattern.compile("((p\\scnf\\s\\d+\\s\\d+\\s)|0)(\\-?\\d+)\\s(\\-?\\d+)\\s0?").matcher(cnfString);
-        Matcher singleNode = Pattern.compile("((p\\scnf\\s\\d+\\s\\d+\\s)|0)(\\-?\\d+)\\s0?").matcher(cnfString);
+        Matcher singleNode = Pattern.compile("((p\\scnf\\s\\d+\\s\\d+\\s)|0\\s)(\\-?\\d+)(\\s0$)?").matcher(cnfString);
         while (singleNode.find()) {
             int x = Integer.parseInt(singleNode.group(3));
-            G.addEdge(vMap(x),vMap(x));
+            G.addEdge(vMap(-x),vMap(x));
         }
         while (matchPairs.find()) {
             try {
